@@ -10,7 +10,7 @@ const Polly = (tweets, setTweets, bPolling, setBPolling) => {
             try {            
                 fetch('http://localhost:4000/api/poll')
                     .then(res => res.json())
-                    .catch(e => console.log(e))
+                    .catch(e => console.log(`err: ${e}`))
                     .then(data => {
                         if (data && data.items) {
                             try {
@@ -20,7 +20,7 @@ const Polly = (tweets, setTweets, bPolling, setBPolling) => {
                                 console.log('change!')
                                 setTweets(arr)
                             }
-                        } catch {}
+                            } catch {}
                         }
                         
                     })

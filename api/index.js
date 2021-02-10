@@ -26,7 +26,7 @@ app.post('/api/spa', (req, res) => {
     const data = req.body
     console.log(`got req with body: ${data}`)
     console.log(data)
-    TweetModel.create({text:data.myData})    
+    TweetModel.create({text:data.myData, likes:0})    
         .then(e =>  res.json({returnData:0}) )
         .catch(e => res.json({returnData:-1}) )
     // res.json({returnData: data.myData + "!!!"})
@@ -34,6 +34,27 @@ app.post('/api/spa', (req, res) => {
     //     {res.json({error: e})}
     // }
 
+})
+
+app.get('/api/like/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    TweetModel.findById(id)
+        .then(tweet => {
+            TweetModel.findByIdAndUpdate(
+                id,
+                {$set:{likes: tweet.likes + 1}},
+                {new:true}
+            )
+            .then(newTweet => {
+                console.log(`updated`)
+                console.log(newTweet)
+                res.json(newTweet)
+            })
+
+        })
+        .catch(e => res.json({serverError:e}))
+    
 })
 
 app.get('/api/poll', (req, res) => {
@@ -44,15 +65,16 @@ app.get('/api/poll', (req, res) => {
         .then(tweets => {
             
             //debug
-            // counter ++ 
-            // console.log(tweets.length)
-            // console.log(tweets)
-            // console.log(counter)
+            counter ++ 
+            console.log(tweets.length)
+            console.log(tweets)
+            console.log(counter)
             
             let ret = undefined
             if (tweets) {
                 ret = tweets.map(x => {
-                        if (x) return {text: x.text}
+                        // if (x) return {text: x.text}
+                        if (x) return x
                     })
                 
                 if (ret) {

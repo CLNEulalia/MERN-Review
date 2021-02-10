@@ -15,7 +15,11 @@ function App() {
   const [bPolling, setBPolling] = useState(false)
 
   const tweetsView = tweets.map(tweet => {
-    return (<TweetItem tweet={tweet.text} />)
+    return (<TweetItem 
+              tweet={tweet.text} 
+              likes={tweet.likes} 
+              _id=  {tweet._id}  
+            />)
   })
 
   Polly(tweets, setTweets, bPolling, setBPolling)
