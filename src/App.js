@@ -14,12 +14,14 @@ function App() {
   const [tweets,   setTweets  ] = useState([])
   const [bPolling, setBPolling] = useState(false)
 
-  const tweetsView = tweets.map(tweet => {
-    return (<TweetItem 
-              tweet={tweet.text} 
-              likes={tweet.likes} 
-              _id=  {tweet._id}  
-            />)
+  const tweetsView = tweets
+    .sort((a,b) => b.likes - a.likes)
+    .map(tweet => {
+      return (<TweetItem 
+                tweet={tweet.text} 
+                likes={tweet.likes} 
+                _id=  {tweet._id}  
+              />)
   })
 
   Polly(tweets, setTweets, bPolling, setBPolling)

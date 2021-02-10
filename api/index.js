@@ -57,6 +57,18 @@ app.get('/api/like/:id', (req, res) => {
     
 })
 
+app.delete('/api/like/:id', (req, res) => {
+    const id = req.params.id
+    console.log(`deelting: ${id}`)
+    TweetModel.findByIdAndDelete(id)
+        .then(delTweet => {
+            if (delTweet) res.json(delTweet)
+            else res.json({})
+            })
+        .catch(e => res.json({serverError:e}))
+    
+})
+
 app.get('/api/poll', (req, res) => {
     
     let msg = {items:[]}
