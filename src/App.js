@@ -4,12 +4,21 @@ import './App.css';
 import ComOne from './ComOne'
 import ComTwo from './ComTwo'
 import FormOne from './FormOne'
+import TweetItem from './TweetItem'
+import Polly from './Poller'
 
 function App() {
 
   const [stateOne, setStateOne] = useState("one")
   const [stateTwo, setStateTwo] = useState("two")
-  
+  const [tweets,   setTweets  ] = useState([])
+  const [bPolling, setBPolling] = useState(false)
+
+  const tweetsView = tweets.map(tweet => {
+    return (<TweetItem tweet={tweet.text} />)
+  })
+
+  Polly(tweets, setTweets, bPolling, setBPolling)
 
   return (
     <div className="App">
@@ -17,7 +26,13 @@ function App() {
         <h1> What up </h1>
         <ComOne s={stateOne} />
         <ComTwo s={stateTwo} />
-        <FormOne setter={setStateOne} setterTwo={setStateTwo}/>
+        {tweetsView}
+        <FormOne 
+          setter={setStateOne} 
+          setterTwo={setStateTwo}
+          tweets={tweets}
+          setTweets={setTweets}
+          />
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.

@@ -2,12 +2,14 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const app = express()
+const TweetModel = require('./db/tweet')
 const port = 4000
 
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname, '../build')))
+let counter = 0
 
 app.get('/api/', (req, res) => {
     res.send('on api route')
@@ -20,15 +22,52 @@ app.post('/api/submission', (req, res) => {
 })
 
 app.post('/api/spa', (req, res) => {
-    try {
+    
     const data = req.body
     console.log(`got req with body: ${data}`)
     console.log(data)
-    res.json({returnData: data.myData + "!!!"})
-    } catch { e => 
-        {res.json({error: e})}
-    }
+    TweetModel.create({text:data.myData})    
+        .then(e =>  res.json({returnData:0}) )
+        .catch(e => res.json({returnData:-1}) )
+    // res.json({returnData: data.myData + "!!!"})
+    // } catch { e => 
+    //     {res.json({error: e})}
+    // }
 
+})
+
+app.get('/api/poll', (req, res) => {
+    
+    let msg = {items:[]}
+    
+    TweetModel.find({})    
+        .then(tweets => {
+            
+            //debug
+            // counter ++ 
+            // console.log(tweets.length)
+            // console.log(tweets)
+            // console.log(counter)
+            
+            let ret = undefined
+            if (tweets) {
+                ret = tweets.map(x => {
+                        if (x) return {text: x.text}
+                    })
+                
+                if (ret) {
+                    if (ret.length > 0) {
+                        msg['items'] = ret
+                    }
+                }
+            }
+            res.json(msg)
+            })
+        .catch( e => {
+            msg['err'] = e; 
+            res.json(msg) 
+            })
+    
 })
 
 app.get('*', (req, res) => {

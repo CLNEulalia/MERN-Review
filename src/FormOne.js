@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const FormOne = (props) => {
     
@@ -21,6 +21,32 @@ const FormOne = (props) => {
             .then(x => {props.setterTwo(x.returnData)})
             .finally('call over')
     }
+
+    // useEffect( () => {
+    //     setInterval(() => {
+    //         console.log('ping')
+    //         try {            
+    //             fetch('http://localhost:4000/api/poll')
+    //                 .then(res => res.json())
+    //                 .catch(e => console.log(e))
+    //                 .then(data => {
+    //                     if (data && data.items) {
+    //                         try {
+    //                         const arr = data.items
+    //                         console.log(arr)
+    //                         if (arr.length > props.tweets.length) {
+    //                             console.log('change!')
+    //                             props.setTweets(arr)
+    //                         }
+    //                     } catch {}
+    //                     }
+                        
+    //                 })
+                    
+    //         } catch {console.log(`err post fetch`)}
+            
+    //     }, 2000)
+    // })
     return (
         <div onClick={() => {props.setter(Math.random())}}>
             {/* <p>form</p> */}
