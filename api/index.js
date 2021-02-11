@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 const app = express()
-const TweetModel = require('./db/tweet')
+// const TweetModel = require('./db/tweet')
 const port = process.env.PORT || 4000
 
 app.use(cors())
